@@ -1,43 +1,61 @@
 class Solution {
 public:
-    int d=256;
-    long long int MOD=INT_MAX;
-    int strStr(string hay, string need) {
-        long long int n,m,p=0,t=0,h=1,j;
-        n=hay.size();
-        m=need.size();
-        for(int i=0;i<m-1;i++)
+    void pref(string need,int lps[])
+    {
+        int l=0;
+        lps[0]=0;
+        for(int i=1;i<need.size();i++)
         {
-          h=(h*d)%MOD;
-        }
-        for(int i=0;i<m;i++)
-        {
-          p=(d*p+need[i])%MOD;
-          t=(d*t+hay[i])%MOD;
-        }
-        for(int i=0;i<n-m+1;i++)
-        {
-            if(p==t)
+            if(need[l]==need[i])
             {
-                for(j=0;j<m;j++)
-                {
-                    if(hay[i+j]!=need[j])
-                    {
-                        break;
-                    }   
-                }
-             if(j==m)
-             return i; 
+                l++;
+                lps[i]=l;
             }
-           if(i<n-m)
-           {
-               t=(((t-hay[i]*h)*d)+hay[i+m])%MOD;
-           }
-           if(t<0)
-           {
-               t=t+MOD;
-           }
+            else
+            {
+                if(l!=0)
+                {
+                    l=lps[l-1];
+                    i--;
+                }
+                else
+                {lps[i]=0;}
+            }
+        }
+    }
+    int strStr(string hay, string need) {
+       int n,m,r=0,l=0;
+        n=hay.size();
+        if(n==0)
+        return 0;
+        m=need.size();
+        int lps[m];
+        pref(need,lps);
+        int cnt=0;
+        while(r<n)
+        {
+            if(hay[r]==need[l])
+            {
+                r++;
+                l++;
+            }
+            if(l==m)
+            {
+                return r-l;
+                //ans[cnt]=r-l
+                //cnt++
+                //l=lps[l-1]
+            }
+            else if(r<n and hay[r]!=need[l])
+            {
+                if(l!=0)
+                l=lps[l-1];
+                else
+                r++;    
+            }
+                
         }
         return -1;
+        
     }
 };
