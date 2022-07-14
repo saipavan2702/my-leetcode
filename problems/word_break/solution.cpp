@@ -1,21 +1,35 @@
 class Solution {
 public:
-    bool wordBreak(string s, vector<string>& words) {
+    bool wordBreak(string s,vector<string>&word) {
         int n;n=s.size();
-    vector<bool>vis(n+1,0);
-    vis[0]=1;
-    for(int i=1;i<=n;i++)
-    {
-        for(int j=0;j<i;j++)
+        unordered_set<string>dict;
+        for(auto x:word)
+        dict.insert(x);
+        
+        queue<int>q;
+        unordered_set<int>st;
+        q.push(0);
+        while(!q.empty())
         {
-        auto it=find(words.begin(),words.end(),s.substr(j,i-j));
-            if(vis[j] and it!=words.end())
+            int i=q.front();
+            q.pop();
+            if(st.find(i)==st.end())
             {
-                vis[i]=1;
-                break;
+                st.insert(i);
+                for(int j=i;j<n;j++)
+                {
+                    string str=s.substr(i,j-i+1);
+                    if(dict.find(str)!=dict.end())
+                    {
+                        q.push(j+1);
+                        if(j==n-1)
+                        return 1;
+                    }
+                    
+                }
             }
         }
-    }
-        return vis.back();
+        return 0;
+        
     }
 };
