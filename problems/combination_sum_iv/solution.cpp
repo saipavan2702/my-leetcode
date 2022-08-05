@@ -1,7 +1,7 @@
 class Solution {
 public:
-    int dp[1005];
-    int dfs(vector<int>&nums,int target)
+     int dp[1005];
+     int dfs(vector<int>&nums,int target)
     {
         if(target==0)
         return 1;
@@ -20,5 +20,6 @@ public:
     int combinationSum4(vector<int>& nums, int target) {
         memset(dp,-1,sizeof(dp));
         return dfs(nums,target);
+    
     }
 };
