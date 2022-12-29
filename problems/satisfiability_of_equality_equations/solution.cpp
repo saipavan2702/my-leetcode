@@ -1,46 +1,45 @@
 class Solution {
-    int par[27];
-    int R[27];
 public:
-    int find(int x){
-        if(par[x] == x)
-            return par[x] = x;
-        return par[x] = find(par[x]);
+    int find(int r,int P[]) {
+        if(r!=P[r])
+        return find(P[r],P);
+
+        return r;
     }
-    
-    void Union(int x, int y){
-        if(R[x] < R[y]){
-            R[y] += R[x];
-            par[x] = y;
-        }
-        else{
-            R[x] += R[y];
-            par[y] = x;
-        }
+    void uni(int u, int v, int P[]) {
+        int a=find(u,P);
+        int b=find(v,P);
+
+        if(a!=b)
+        P[b]=a;
     }
-    
-    bool equationsPossible(vector<string>& equations) {
-        for(int i = 0; i < 27; i++){
-            par[i] = i;
-            R[i] = 0;
+    bool equationsPossible(vector<string>& T) {
+        int P[27];
+        for(int i=0;i<27;i++)
+        P[i]=i;
+
+        for(auto&x:T){
+           if(x[1]=='!')
+           continue;
+
+           int lo=x[0]-'a';
+           int hi=x[3]-'a';
+
+           uni(lo,hi,P);
         }
-        
-        for(string equation: equations){
-            int a = find(equation[0] - 'a');
-            int b = find(equation[3] - 'a');
+        for(auto&x:T) {
+            if(x[1]!='!')
+            continue;
+
+            int lo=x[0]-'a';
+            int hi=x[3]-'a';
+
+            int p=find(lo,P);
+            int q=find(hi,P);
             
-            if(equation[1] == '=') Union(a, b);
+            if(p==q)
+            return 0;
         }
-        
-        for(string equation: equations){
-            int a = find(equation[0] - 'a');
-            int b = find(equation[3] - 'a');
-            
-            if(equation[1] == '!' && a == b){
-                return false;
-            }
-        }
-        
-        return true;
+        return 1;
     }
 };
