@@ -1,36 +1,31 @@
 class Solution {
 public:
-    bool check(int freq[],int count[])
-    {
-        for(int i=0;i<26;i++)
-        if(freq[i]!=count[i])
-        return 0;
-        
+    bool check(int freq[],int count[]){
+        for(int i=0;i<26;i++){
+            if(freq[i]!=count[i])
+            return 0;
+        }
         return 1;
     }
     vector<int> findAnagrams(string s, string p) {
-        int n,q;
-        n=s.size();
-        q=p.size();
+        int q=p.size();
+        int n=s.size();
+
         int freq[26]={0};
+
+        for(auto &x:p)
+        freq[x-'a']++;
+
+        vector<int>u;
         int count[26]={0};
-        int i=0;
-        
-        vector<int>ans;
-        for(auto&x:p)
-        count[x-'a']++;
-        
-        while(i<n)
-        {
-          freq[s[i]-'a']++;
-          if(i>=q)
-          freq[s[i-q]-'a']--;
-            
-          if(check(freq,count))
-          ans.push_back(i-q+1);
-            
-          i++;
+        for(int i=0;i<n;i++){
+            count[s[i]-'a']++;
+            if(i>=q)
+            count[s[i-q]-'a']--;
+
+            if(check(count,freq))
+            u.push_back(i-q+1);
         }
-        return ans;
+        return u;
     }
 };
