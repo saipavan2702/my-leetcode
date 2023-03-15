@@ -11,35 +11,27 @@
  */
 class Solution {
 public:
-    bool check(TreeNode*point,int i,int k)
-{
-   if(point==NULL)
-   {
-       return true;
-   }
-   if(i>=k)
-   {
-       return false;
-   }
-   return(check(point->left,2*i+1,k) and check(point->right,2*i+2,k));
-}
-int count(TreeNode*node)
-{
-   if(node==NULL)
-   {
-       return 0;
-   }
-  return(1+count(node->left)+count(node->right));
-   
-}
-    bool isCompleteTree(TreeNode* root) {
-         if(root==NULL)
-    {
+    using N=TreeNode*;
+    bool recur(N node, int i, int hav){
+        if(!node)
         return 1;
+
+        if(i>=hav)
+        return 0;
+
+        return recur(node->left,2*i+1,hav) && recur(node->right,2*i+2,hav);
     }
- int k=count(root);
- 
- int i=0;
- return check(root,i,k);
+    int count(N node){
+        if(!node)
+        return 0;
+
+        return 1+count(node->left)+count(node->right);
+    }
+    bool isCompleteTree(TreeNode* root) {
+       if(!root)
+       return 0;
+
+       int hav=count(root);
+       return recur(root,0,hav);
     }
 };
