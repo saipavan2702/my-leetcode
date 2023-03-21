@@ -1,27 +1,31 @@
 class Solution {
 public:
-    long long zeroFilledSubarray(vector<int>& nums) {
-        long long int cnt=0,k=0;
-        int n;n=nums.size();
-        //vector<int>res;
-        
-        for(int i=0;i<n;i++)
-        {
-            if(nums[i]==0)
-            {
-                k++;
-            }
-            else
-            {
-                //res.push_back(k);
-               
-                int sus;
-                sus=((k*(k+1))/2);
-                cnt+=sus;
-                k=0;
+    long long zeroFilledSubarray(vector<int>& A) {
+        long long h=0;
+        int n=size(A);
+
+        stack<int>st;
+        for(int i=0;i<n;i++){
+            if(A[i]==0){
+                st.push(0);
+            }else{
+                if(!st.empty()){
+                    while(!st.empty()){
+                        int r=st.size();
+                        h+=r;
+                        st.pop();
+                    }
+                }
             }
         }
-        cnt+=((k*(k+1))/2);
-        return cnt;
+        if(!st.empty()){
+            while(!st.empty()){
+                int r=st.size();
+                h+=r;
+                st.pop();
+            }
+        }
+        return h;
+
     }
 };
