@@ -28,5 +28,22 @@ public:
         }
         return 1;
 
+        // function<bool(int,int)>recur=[&](int ch, int col){
+        //     if(vis[ch]!=0)
+        //     return (vis[ch]==col);
+
+        //     vis[ch]=col;
+        //     for(auto x:T[ch]){
+        //         if(vis[x]==vis[ch])
+        //         return false;
+
+        //         if(!vis[x]){
+        //             vis[x]=-col;
+        //             recur(x,vis[x]);
+        //         }
+        //     }
+        //     return true;
+        // };
+        // return recur(0,1);
     }
 };
