@@ -1,51 +1,39 @@
 /**
  * Definition for singly-linked list.
- * struct ListNode {
+ * struct L {
  *     int val;
- *     ListNode *next;
+ *     L *next;
  *     ListNode() : val(0), next(nullptr) {}
  *     ListNode(int x) : val(x), next(nullptr) {}
- *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ *     ListNode(int x, L *next) : val(x), next(next) {}
  * };
  */
 class Solution {
-public:
-     void create(ListNode**point,int l)
- {
-    ListNode*curr=new ListNode(l);
-    curr->next=*point;
-    *point=curr;
- }
-    ListNode* partition(ListNode* head, int k) {
-        if(!head)
-   return 0;
+    public:
+     ListNode* partition(ListNode* head, int x) {
+        using L=ListNode*;
 
-   ListNode*temp=head;
-   vector<int>res;
-   while(temp!=NULL)
-   {
-       if(temp->val<k)
-       res.push_back(temp->val);
-       temp=temp->next;
-   }
-   /*temp=head;
-   while(temp!=NULL)
-   {
-       if(temp->val==k)
-       res.push_back(temp->val);
-       temp=temp->next;
-   }*/
-   temp=head;
-   while(temp!=NULL)
-   {
-       if(temp->val>=k)
-       res.push_back(temp->val);
-       temp=temp->next;
-   }
-   ListNode*book=NULL;
-   for(int i=res.size()-1;i>=0;i--)
-    create(&book,res[i]);
-
-   return book;
+        L left = new ListNode(0);
+        L right = new ListNode(0);
+        
+        L leftTail = left;
+        L rightTail = right;
+        
+        while(head){
+            if(head->val < x){
+                leftTail->next = head;
+                leftTail = leftTail->next;
+            }
+            else{
+                rightTail->next = head;
+                rightTail = rightTail->next;
+            }
+            head = head->next;
+        }
+        
+        leftTail->next = right->next;
+        rightTail->next = nullptr;
+        
+        return left->next;
     }
 };
