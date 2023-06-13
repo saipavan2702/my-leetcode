@@ -11,24 +11,23 @@
  */
 class Solution {
 public:
-    int k;
-    void recur(TreeNode*node,int t,int s)
-    {
-        if(!node)
-        return;
-        
-        s+=node->val;
-        if(s==t and !node->left and !node->right)
-        k=1;
-        
-        recur(node->left,t,s);
-        recur(node->right,t,s);
-        s-=node->val;
-        
-    }
-    bool hasPathSum(TreeNode* root, int t) {
-        k=0;
-        recur(root,t,0);
-        return k;
+    bool hasPathSum(TreeNode* root, int S) {
+        using T=TreeNode*;
+        if(!root)
+        return 0;
+
+        function<bool(T,int)>recur=[&](T node, int curr){
+            if(!node)
+            return false;
+
+            if(!node->left && !node->right){
+                if(curr+node->val==S)
+                return true;
+                else
+                return false;
+            }
+            return recur(node->left,curr+node->val) || recur(node->right,curr+node->val);
+        };
+        return recur(root,0);
     }
 };
