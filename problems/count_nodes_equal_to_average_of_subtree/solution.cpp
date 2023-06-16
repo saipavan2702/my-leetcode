@@ -11,32 +11,29 @@
  */
 class Solution {
 public:
-    int agg(TreeNode*point,int&res)
-    {
-        if(!point)
-        return 0;
-        
-        res++;
-        int ls=agg(point->left,res);
-        int rs=agg(point->right,res);
-        return (ls+rs+point->val);
-    }
-    void preorder(TreeNode*node,int&cnt)
-    {
-        if(!node)
-        return;
-        
-        int res=0;
-        int avg=(agg(node,res))/res;
-        if(avg==node->val)
-        cnt++;
-        preorder(node->left,cnt);
-        preorder(node->right,cnt);
-        
-    }
     int averageOfSubtree(TreeNode* root) {
+        using T=TreeNode*;
+        using pI=pair<int,int>;
+
         int cnt=0;
-        preorder(root,cnt);
+        function<pI(T)>recur=[&](T node)->pI{
+            if(!node)
+            return {0,0};
+
+            auto ln= recur(node->left);
+            auto rn=recur(node->right);
+
+            long subS=node->val+ln.first+rn.first;
+            long subC=ln.second+rn.second+1;
+
+            long avg=subS/subC;
+            if(avg==node->val)
+            cnt++;
+
+            return {node->val+ln.first+rn.first, ln.second+rn.second+1};
+
+        };
+        recur(root);
         return cnt;
     }
 };
