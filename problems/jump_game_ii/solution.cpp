@@ -1,17 +1,20 @@
 class Solution {
 public:
-    int jump(vector<int>& nums) {
-        int res=0,curr=0,n=nums.size();
-        int i=0;
-        int u=0;
-        while(i<n-1){
-            curr=max(curr,i+nums[i]);
-            if(i==res){
-                res=curr;
-                u++;
+    int jump(vector<int>& A) {
+        int n=size(A);
+        int dp[10005];
+        memset(dp,-1,sizeof(dp));
+
+        function<int(int)>recur=[&](int i)->int{
+            if(i>=n-1)return 0;
+            if(dp[i]!=-1)return dp[i];
+
+            int ans=1e9;
+            for(int k=i+1;k<=A[i]+i;k++){
+                ans=min(ans,1+recur(k));
             }
-            i++;
-        }
-        return u;
+            return dp[i]=ans;
+        };
+        return recur(0);
     }
 };
