@@ -1,47 +1,42 @@
 class Solution {
 public:
-    int minJumps(vector<int>& arr) 
-    {
-        int n = arr.size();
-        unordered_map<int, vector<int>>mp;
-        for (int i = 0; i < n; i++) mp[arr[i]].push_back(i);
-        
+    int minJumps(vector<int>& arr) {
+        int n=arr.size();
         queue<int>q;
-        vector<bool>visited(n, false);
+        using uv=unordered_map<int,vector<int>>;
+        uv dict;
+
+        for(int i=0;i<n;i++){
+            dict[arr[i]].push_back(i);
+        }
         q.push(0);
-        int steps = 0;
-        while(!q.empty())
-        {
-            int size = q.size();
-            while(size--)
-            {
-                int currIdx = q.front();
+        vector<bool>vis(n,0);
+
+        int cnt=0;
+        vis[0]=1;
+        while(!q.empty()){
+            int sz=q.size();
+            while(sz--){
+                auto x=q.front();
                 q.pop();
-                if (currIdx == n - 1) return steps;
-                //================================================================
-                //EXPLORE ALL POSSIBLE OPTIONS
-                if (currIdx + 1 < n && !visited[currIdx + 1])  //OPTION-1 (Move Forward)
-                {
-                    visited[currIdx + 1] = true;
-                    q.push(currIdx + 1);
+
+                if(x==n-1)return cnt;
+                if(x+1<n && !vis[x+1]){
+                    vis[x+1]=1;
+                    q.push(x+1);
                 }
-                if (currIdx - 1 >= 0 && !visited[currIdx - 1]) //OPTION-2 (Move Backward)
-                {
-                    visited[currIdx - 1] = true;
-                    q.push(currIdx - 1);
+                if(x-1>=0 and !vis[x-1]){
+                    vis[x-1]=1;
+                    q.push(x-1);
                 }
-                for (int newIdx : mp[arr[currIdx]])  //OPTION-3 (Move to same valued idx)
-                {                                 //newIdx coud be before currIdx or after currIdx
-                    if (!visited[newIdx]) 
-                    {
-                        visited[newIdx] = true;
-                        q.push(newIdx);
-                    }
+                for(auto u:dict[arr[x]]){
+                    if(vis[u])continue;
+                    vis[u]=1;
+                    q.push(u);
                 }
-                //===================================================================
-                mp[arr[currIdx]].clear();    //EXPLAINED BELOW :)
+                dict[arr[x]].clear();
             }
-            steps++;
+            cnt++;
         }
         return -1;
     }
