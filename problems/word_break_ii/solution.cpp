@@ -1,38 +1,24 @@
 class Solution {
 public:
-    vector<string> wordBreak(string s, vector<string>& word) {
-        vector<string>res;
-    
-        unordered_set<string>dict;
-        for(auto x:word)
-        dict.insert(x);
-        
-        string curr;
-      function<void(int)>solve=[&](int i)
-      {
-        if(i==s.size())
-        {
-         res.push_back(curr);
-         return;
-        }
-        string str;
-        for(int j=i;j<s.size();j++)
-        {
-            str=s.substr(i,j-i+1);
-        if(dict.find(str)!=dict.end())
-        {
-          if(!curr.empty())
-          str=" "+str;
-            
-          curr+=str;
-          solve(j+1);
-          curr.erase(curr.size()-str.size());
-        }
-        }
-        
-      };
-        solve(0);
-        return res;
-                    
+    vector<string> wordBreak(string s, vector<string>& D) {
+        int n=s.size();
+        vector<string>ans;
+        unordered_set<string>st(D.begin(),D.end());
+
+        function<void(int,string)>recur=[&](int i, string have){
+            if(i==n){
+                have.pop_back();
+                ans.push_back(have);
+                return;
+            }
+            for(int j=i;j<n;j++){
+                string u=s.substr(i,j-i+1);
+                if(st.find(u)!=st.end()){
+                    recur(j+1,have+u+" ");
+                }
+            }
+        };
+        recur(0,"");
+        return ans;
     }
 };
