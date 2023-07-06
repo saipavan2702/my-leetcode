@@ -1,27 +1,22 @@
 class Solution {
 public:
-    vector<vector<int>>ans;
-    void track(int k,int n,int arr[],vector<int>&res,int x)
-    {
-        if(n==0 and k==0)
-        {
-         ans.push_back(res);
-         return;
-        }
-        for(int i=x;i<9;i++)
-        {
-            if(n<arr[i])
-            continue;
-            
-            res.push_back(arr[i]);
-            track(k-1,n-arr[i],arr,res,i+1);
-            res.pop_back();
-        }
-    }
     vector<vector<int>> combinationSum3(int k, int n) {
-        int arr[9]={1,2,3,4,5,6,7,8,9};
-        vector<int>res;
-        track(k,n,arr,res,0);
+        vector<vector<int>>ans;
+        vector<int>have;
+
+        function<void(int,int,int)>recur=[&](int i, int k, int curr){
+            if(k==0){
+                if(curr==0)ans.push_back(have);
+                return;
+            }
+            if(i>=10 || curr<0)return;
+            recur(i+1,k,curr);
+
+            have.push_back(i);
+            recur(i+1,k-1,curr-i);
+            have.pop_back();
+        };
+        recur(1,k,n);
         return ans;
     }
 };
