@@ -1,33 +1,29 @@
 class Solution {
 public:
-    int findCheapestPrice(int n, vector<vector<int>>&E, int S, int D, int k) {
-        vector<vector<pair<int,int>>>adj(n);
-        for(auto x:E){
-            adj[x[0]].push_back({x[1],x[2]});
-        }
-        queue<pair<int,int>>q;
-        q.push({S,0});
-        
-        vector<int>cst(n,INT_MAX);
-        while(!q.empty() && k>=0) {
-            int len=q.size();
-            while(len--) {
+    using pI=pair<int,int>;
+    int findCheapestPrice(int N,vector<vector<int>>&E,int src,int D,int k){
+        vector<pI>adj[N+1];
+        for(auto e:E) adj[e[0]].push_back({e[1],e[2]});
 
-                auto p=q.front();
+        queue<pI>q;
+        q.push({src,0});
+
+        vector<int>cost(N,INT_MAX);
+        k++;
+        while(!q.empty() and k--){
+            int sz=q.size();
+            while(sz--){
+                auto [u,v]=q.front();
                 q.pop();
-                int z=p.first;
-                int d=p.second;
 
-                for(auto [u,v]:adj[z]) {
-
-                    if(d+v<cst[u]) {
-                        cst[u]=d+v;
-                        q.push({u,cst[u]});
+                for(auto [node,price]:adj[u]){
+                    if(v+price<cost[node]){
+                        cost[node]=v+price;
+                        q.push({node,cost[node]});
                     }
                 }
             }
-            k--;
         }
-        return cst[D]==INT_MAX?-1:cst[D];
+        return cost[D]==INT_MAX?-1:cost[D];
     }
 };
