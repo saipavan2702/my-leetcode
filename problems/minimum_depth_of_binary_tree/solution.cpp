@@ -11,36 +11,30 @@
  */
 class Solution {
 public:
-    int mind(TreeNode*node)
-    {
-        if(!node)
+    using T=TreeNode*;
+    int minDepth(TreeNode* root) {
+        queue<pair<T,int>>q;
+        if(!root)
         return 0;
-        queue<TreeNode*>q;
-        q.push(node);
-        int ans=0;
-        while(!q.empty())
-        {
-            int n;
-            n=q.size();
-            ans++;
-            for(int i=0;i<n;i++)
-            {
-                TreeNode*curr=q.front();
+        
+        q.push({root,1});
+
+        while(!q.empty()){
+            int sz=q.size();
+            while(sz--){
+                auto node=q.front();
                 q.pop();
-                if(curr->left)
-                q.push(curr->left);
-                if(curr->right)
-                q.push(curr->right);
-                
-                if(!curr->left and !curr->right)
-                return ans;
+
+                if(!node.first->left and !node.first->right)
+                return node.second;
+
+                if(node.first->left)
+                q.push({node.first->left,node.second+1});
+
+                if(node.first->right)
+                q.push({node.first->right,node.second+1});
             }
         }
-        return ans;
-    }
-    int minDepth(TreeNode* root) {
-        int x;
-        x=mind(root);
-        return x;
+        return 2;
     }
 };
