@@ -7,7 +7,7 @@ var myPow = function(x, n) {
     if(n==0)
     return 1;
 
-    if(n<0 && n!=2147483648)
+    if(n<0)
     {
         n=-n;
         x=1/x;
