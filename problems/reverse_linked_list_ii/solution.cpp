@@ -10,7 +10,6 @@
  */
 class Solution {
 public:
-    
     ListNode* reverseBetween(ListNode* head, int left, int right) {
         ListNode**dict=&head;
         int k=left;
@@ -26,6 +25,5 @@ public:
             swap(*dict,fast->next);
         }
         return head;
-        
     }
 };
