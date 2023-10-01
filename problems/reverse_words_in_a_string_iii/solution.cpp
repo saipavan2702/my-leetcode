@@ -1,19 +1,16 @@
 class Solution {
 public:
     string reverseWords(string s) {
-        int n;
-        n=s.size();
-        
+        stringstream ss(s);
+        string sing;
+
         string ans="";
-        stringstream str(s);
-        string r;
-        while(str>>r)
-        {
-            reverse(r.begin(),r.end());
-            ans+=r;
+        while(ss >> sing){
+            reverse(sing.begin(),sing.end());
+            ans+=sing;
             ans+=" ";
         }
-        string res=ans.substr(0,n);
-        return res;
+        ans.pop_back();
+        return ans;
     }
 };
