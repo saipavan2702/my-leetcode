@@ -1,13 +1,16 @@
 class Solution {
 public:
-   
-    vector<int> getRow(int l) {
-        vector<int>res(l+1);
-        res[0]=1;
-        for(int i=1;i<=l;i++)
-		{
-          res[i]=(int)((long)res[i-1]*(l-i+1)/(i));
+    vector<int> getRow(int I) {
+        vector<vector<int>>dp(35,vector<int>(35,0));
+
+        dp[0][0]=1;
+        for(int i=1;i<=I;i++){
+            for(int j=0;j<=i;j++){
+                dp[i][j]=dp[i-1][j]+(j-1>=0?dp[i-1][j-1]:0);
+            }
         }
-        return res;
+
+        dp[I].resize(I+1);
+        return dp[I];
     }
 };
