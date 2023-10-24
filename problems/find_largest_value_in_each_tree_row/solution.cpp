@@ -16,8 +16,8 @@ public:
          if(!node)
          return ;
         
-        deque<TreeNode*>q;
-        q.push_back(node);
+        queue<TreeNode*>q;
+        q.push(node);
         while(!q.empty())
         {
             int n,gt=INT_MIN;
@@ -25,15 +25,15 @@ public:
             for(int i=0;i<n;i++)
             {
                 TreeNode*curr=q.front();
-                q.pop_front();
+                q.pop();
                 if(curr->val>gt)
                 {
                     gt=curr->val;
                 }
                 if(curr->left)
-                q.push_back(curr->left);
+                q.push(curr->left);
                 if(curr->right)
-                q.push_back(curr->right);
+                q.push(curr->right);
             }
             res.push_back(gt);
         }
