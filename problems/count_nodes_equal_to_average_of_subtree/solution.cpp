@@ -17,21 +17,15 @@ public:
 
         int cnt=0;
         function<pI(T)>recur=[&](T node)->pI{
-            if(!node)
-            return {0,0};
+            if(!node) return {0,0};
+            pI l=recur(node->left);
+            pI r=recur(node->right);
 
-            auto ln= recur(node->left);
-            auto rn=recur(node->right);
+            int S=l.first+r.first+node->val;
+            int C=l.second+r.second+1;
 
-            long subS=node->val+ln.first+rn.first;
-            long subC=ln.second+rn.second+1;
-
-            long avg=subS/subC;
-            if(avg==node->val)
-            cnt++;
-
-            return {node->val+ln.first+rn.first, ln.second+rn.second+1};
-
+            if(S/C==node->val) cnt++;
+            return {S,C};
         };
         recur(root);
         return cnt;
