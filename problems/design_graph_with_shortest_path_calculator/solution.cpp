@@ -34,10 +34,6 @@ public:
                 int vet=u.first;
                 
                 if(d+dt<dist[vet]){
-                    
-//                     if(dist[vet]!=1e9)
-//                     st.erase({dist[vet],vet});
-                    
                     dist[vet]=d+dt;
                     st.insert({dist[vet],vet});
                 }
