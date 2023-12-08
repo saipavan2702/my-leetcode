@@ -11,28 +11,30 @@
  */
 class Solution {
 public:
-    void recur(TreeNode*node,string&str)
-    {
-        if(!node)
-        return;
-        
-        str+=to_string(node->val);
-        if(node->left or node->right)
-        {
-         str+="(";
-         recur(node->left,str);
-         str+=")";
-        }
-        if(node->right)
-        {
-         str+="(";
-         recur(node->right,str);
-         str+=")";
-        }
-    }
+    using T=TreeNode*;
     string tree2str(TreeNode* root) {
-        string str="";
-        recur(root,str);
-        return str;
+        string s="";
+        function<void(T)>recur=[&](T node){
+            if(!node) return;
+
+            s+=to_string(node->val);
+
+            if(node->left){
+                s+="(";
+                recur(node->left);
+                s+=")";
+            }
+
+            if(node->right) {
+                if(!node->left) s+="()";
+                
+                s+="(";
+                recur(node->right);
+                s+=")";
+            }
+        };
+
+        recur(root);
+        return s;
     }
 };
